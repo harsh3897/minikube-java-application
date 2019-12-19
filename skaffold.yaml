@@ -1,0 +1,24 @@
+apiVersion: skaffold/v1beta2
+kind: Config
+build:
+  artifacts:
+  - image: hello-world
+    context: .
+  tagPolicy:
+    envTemplate:
+            template: "{{.IMAGE_NAME}}:{{.v1}}"
+deploy:
+  kubectl:
+    manifests:
+    - ./skaffold/**.yaml
+profiles:
+- name: local
+  build:
+    local:
+      push: false
+
+- name: imagepush
+  build: 
+    local:
+      push: true
+   
